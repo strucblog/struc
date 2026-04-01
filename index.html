@@ -479,9 +479,12 @@
         <div class="newsletter-box">
           <div class="label">Newsletter</div>
           <p>get new posts and small architecture notes by email.</p>
-          <form class="newsletter-form">
-            <input type="email" placeholder="your email" aria-label="Email address">
-            <button type="submit">Join</button>
+          <form class="newsletter-form"
+          action="https://buttondown.com/api/emails/embed-subscribe/struc"
+          method="post">
+           <input type="email" name="email" placeholder="your email" required>
+           <input type="hidden" name="tag" value="struc">
+           <button type="submit">Join</button>
           </form>
         </div>
       </div>
