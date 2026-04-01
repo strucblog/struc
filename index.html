@@ -1,0 +1,511 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>struc</title>
+<link rel="icon" type="image/png" href="struc.png">
+
+<style>
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Full-page GIF background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("strucbackground.gif");
+    background-repeat: repeat;
+    background-size: 300px auto;
+    background-position: top left;
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    filter: contrast(1.08) brightness(1.03);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Soft white wash so the page stays clean */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(255,255,255,0.72), rgba(255,255,255,0.84)),
+      radial-gradient(circle at 50% 20%, rgba(255,255,255,0.12), transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .cursor {
+    position: fixed;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,0,0,0.05) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fdfdfd;
+    z-index: 10;
+    border-bottom: 1px solid #000;
+  }
+
+  .logo-gif {
+    height: 60px;
+    width: auto;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+  }
+
+  nav a {
+    margin-left: 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 1px;
+    background: #000;
+    transition: width 0.25s ease;
+  }
+
+  nav a:hover::after {
+    width: 100%;
+  }
+
+  .wrap {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 0 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero h1 {
+    margin: 0;
+    max-width: 600px;
+    font-size: 80px;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    font-weight: 700;
+    animation: rise 0.8s ease both;
+  }
+
+  .hero-line {
+    width: 180px;
+    height: 1px;
+    background: #000;
+    margin-top: 22px;
+    transform-origin: left;
+    animation: grow 0.8s ease both;
+    animation-delay: 0.12s;
+  }
+
+  .hero p {
+    margin: 18px 0 0;
+    max-width: 420px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+    animation: rise 0.8s ease both;
+    animation-delay: 0.08s;
+  }
+
+  /* Posts */
+  .posts {
+    padding: 20px 0 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-title {
+    margin: 0 0 26px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .post {
+    padding: 22px 0;
+    border-top: 1px solid #000;
+    transition: transform 0.25s ease;
+  }
+
+  .post:last-child {
+    border-bottom: 1px solid #000;
+  }
+
+  .post:hover {
+    transform: translateX(6px);
+  }
+
+  .post h3 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  .post p {
+    margin: 0;
+    max-width: 520px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .post a {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2px;
+  }
+
+  /* About */
+  .about {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid #000;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .about-left {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+  }
+
+  .about-left p {
+    margin: 0;
+    max-width: 520px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #111;
+  }
+
+  .social {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .social img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.72;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .social img:hover {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  .newsletter-box {
+    border: 1px solid #000;
+    padding: 18px;
+    background: rgba(255,255,255,0.92);
+  }
+
+  .newsletter-box .label {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .newsletter-box p {
+    margin: 0 0 14px;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 10px;
+  }
+
+  .newsletter-form input {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid #000;
+    padding: 12px;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+  }
+
+  .newsletter-form input:focus {
+    box-shadow: inset 0 0 0 1px #000;
+  }
+
+  .newsletter-form button {
+    border: 1px solid #000;
+    background: #000;
+    color: #fff;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .newsletter-form button:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  footer {
+    padding: 26px 0 42px;
+    border-top: 1px solid #000;
+    position: relative;
+    z-index: 2;
+    font-size: 12px;
+    color: #666;
+    letter-spacing: 0.5px;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes grow {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      padding-top: 140px;
+    }
+
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    header {
+      padding: 14px 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .logo-gif {
+      height: 52px;
+    }
+
+    nav a {
+      margin-left: 0;
+      margin-right: 18px;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 24px));
+    }
+
+    .hero {
+      padding-top: 150px;
+      gap: 20px;
+    }
+
+    .hero h1 {
+      font-size: 50px;
+    }
+
+    .hero-visual {
+      min-height: 320px;
+    }
+
+    .newsletter-form {
+      flex-direction: column;
+    }
+
+    .newsletter-form button {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="cursor" id="cursor"></div>
+
+  <header>
+    <img src="struc.gif" class="logo-gif" alt="struc logo">
+    <nav>
+      <a href="#">Home</a>
+      <a href="#about">About</a>
+      <a href="#posts">Posts</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>structure<br>and silence</h1>
+      <div class="hero-line"></div>
+      <p>a simple blog about architecture and strange buildings</p>
+    </section>
+
+    <section class="posts" id="posts">
+      <h2 class="section-title">Latest Posts</h2>
+
+      <article class="post">
+        <h3>Brutalism: the most honest form of concrete</h3>
+        <p>is it cold or just real?</p>
+        <a href="post1.html">read article</a>
+      </article>
+
+      <article class="post">
+        <h3>Urban renewal and memory</h3>
+        <p>what happens when cities forget?</p>
+        <a href="#">coming soon</a>
+      </article>
+    </section>
+
+    <section class="about" id="about">
+      <div class="about-grid">
+        <div class="about-left">
+          <p>hi, i'm semih. i write about architecture in a simple way.</p>
+
+          <div class="social">
+            <a href="https://instagram.com/semihhhfz" target="_blank" rel="noopener noreferrer">
+              <img src="instagramicon.PNG" alt="Instagram">
+            </a>
+            <a href="https://youtube.com/@semihsf" target="_blank" rel="noopener noreferrer">
+              <img src="youtubeicon.PNG" alt="YouTube">
+            </a>
+          </div>
+        </div>
+
+        <div class="newsletter-box">
+          <div class="label">Newsletter</div>
+          <p>get new posts and small architecture notes by email.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="your email" aria-label="Email address">
+            <button type="submit">Join</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>struc</footer>
+  </main>
+
+  <script>
+    const cursor = document.getElementById("cursor");
+    const header = document.querySelector("header");
+
+    document.addEventListener("mousemove", (e) => {
+      cursor.style.left = e.clientX + "px";
+      cursor.style.top = e.clientY + "px";
+
+      const headerRect = header.getBoundingClientRect();
+      const inHeader = e.clientY <= headerRect.bottom;
+      cursor.style.opacity = inHeader ? "0" : "1";
+    });
+
+    document.addEventListener("mouseleave", () => {
+      cursor.style.opacity = "0";
+    });
+  </script>
+</body>
+</html>
